@@ -1,0 +1,15 @@
+.itemContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.itemBox {
+    padding: 5px;
+    width: 80px;
+}
+
+.itemBox img {
+    width: 80px;
+}
+

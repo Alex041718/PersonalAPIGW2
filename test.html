@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title></title>
+    </head>
+    <body>
+
+    <script>
+
+
+        
+        fetch('https://api.guildwars2.com/v2/characters/?access_token=ABD7871C-A6FD-B34B-A080-29A7B36D5925DE300744-3D6C-445A-BECC-652E7F666AA9')
+  .then(response => response.json()) // Convertir la réponse en JSON
+  .then(data => console.log(data)) // Afficher les données de la réponse
+  .catch(error => console.error(error)); // Gérer les erreurs
+
+
+
+
+    </script>
+
+    </body>
+</html>
