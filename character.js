@@ -6,26 +6,53 @@ var apiKey = "ABD7871C-A6FD-B34B-A080-29A7B36D5925DE300744-3D6C-445A-BECC-652E7F
 
 
 var name = "Fapoda"; // Remplacez "Fapoda" par le nom du personnage souhaité
+/*
+function getListCharacter(apiKey) {
+  fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://api.guildwars2.com/v2/characters/?access_token=' + apiKey + '&lang=fr')}`)
+                    .then(response => response.json())
+                    .then(data => console.log(JSON.parse(data.contents)));
+  
+  return 
+}
+*/
+
+async function getListCharacter(apiKey) {
+  try {
+    
+    
+    const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://api.guildwars2.com/v2/characters/?access_token=' + apiKey + '&lang=fr')}`);
+    const data = await response.json();
+    
+    const charactersData = JSON.parse(data.contents);
+    
+    //console.log(charactersData);
+    // Faites ce que vous voulez avec les données ici
+    return charactersData;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+
 
 
 function updateCharacter(characterName) {
   
 
 
-
-
-   // Remplacez "VotreCléAPI" par votre clé API Guild Wars 2 valide
+   
 
   var characterContainer = document.getElementById("characterContainer");
 
   fetch('https://api.guildwars2.com/v2/characters/' + characterName + '?access_token=' + apiKey)
     .then(response => response.json())
     .then(characterData => {
-      console.log(characterData);
+      //console.log(characterData);
 
       // Accédez à la liste des objets équipés par le personnage
       const equippedItems = characterData.equipment;
-      console.log(equippedItems); // Affiche la liste des objets équipés
+      //console.log(equippedItems); // Affiche la liste des objets équipés
 
       // Créer un tableau de promesses pour chaque requête d'image d'objet
       const itemImagePromises = equippedItems.map((item) => {
@@ -45,7 +72,7 @@ function updateCharacter(characterName) {
       Promise.all(itemImagePromises)
         .then(itemImages => {
           // Vous avez maintenant toutes les images des objets équipés dans le tableau itemImages
-          console.log(itemImages);
+          //console.log(itemImages);
 
           // Créer le contenu HTML final en utilisant les détails de chaque objet équipé
           var renderContainer = "";
@@ -93,16 +120,24 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://api.guildwars2.com/v2/characters/?access_token=ABD7871C-A6FD-B34B-A080-29A7B36D5925DE300744-3D6C-445A-BECC-652E7F666AA9&lang=fr", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
 
 
 
 // Récupérer l'élément select
 const characterSelect = document.getElementById('characterSelect');
+
+// Récupér;er la liste des personnages
+getListCharacter(apiKey).then(data => {
+  const selectCharacter = document.getElementById("characterSelect");
+  console.log(data);
+  let renderSelectcharacter = "";
+  for (item of data) {
+    console.log(item);
+    renderSelectcharacter += `<option value="${item}">${item}</option>`;
+  }
+  selectCharacter.innerHTML = renderSelectcharacter;
+});
+
 
 // Attacher un événement à l'élément select
 characterSelect.addEventListener('change', function(event) {
@@ -110,4 +145,5 @@ characterSelect.addEventListener('change', function(event) {
   const selectedValue = event.target.value; // Récupérer la valeur de l'option sélectionnée
   console.log('Option sélectionnée :', selectedValue);
   updateCharacter(selectedValue) // Mettre à jour le personnage avec la valeur sélectionnée
+  document.getElementById("nameCharacter").innerHTML = selectedValue;
 });
